@@ -228,5 +228,27 @@ function checkUpgradeAvailability() {
     });
 }
 
+// Shrek Gerçekleri
+const shrekFacts = [
+    "Shrek aslında Yiddish dilinde 'korku' anlamına gelir! 🧅",
+    "Shrek'in yıldızı Hollywood Walk of Fame'de bulunmaktadır. ⭐",
+    "Shrek filminin yapımı 1995 yılında başlamıştır. 🎬",
+    "Eddie Murphy, Eşek rolünü seslendirmekten çok keyif almıştır. 🐴",
+    "Shrek, En İyi Animasyon Filmi dalında ilk Oscar'ı kazanan filmdir. 🏆",
+    "Ogreler soğan gibidir, katmanları vardır! 🧅",
+    "Bataklık, Shrek'in en sevdiği yerdir. 🏞️",
+    "Zencefilli Kurabiye Adam'ın bacakları süte batırılmaktan nefret eder! 🥛",
+    "Fiona geceleri bir Ogre'ye dönüşür. 👸👹",
+    "Farquaad'ın kalesi aslında Disneyland'den esinlenilmiştir. 🏰"
+];
+
+function updateTicker() {
+    const tickerText = document.getElementById('fact-text');
+    const randomFact = shrekFacts[Math.floor(Math.random() * shrekFacts.length)];
+    tickerText.innerText = randomFact;
+}
+
 // Oyunu Başlat
 init();
+// Ticker'ı başlat
+setInterval(updateTicker, 10000); // Her 10 saniyede bir değiştir
