@@ -21,14 +21,50 @@
             </div>
 
             <div class="click-area">
-                <!-- Şimdilik placeholder bir div, daha sonra görsel eklenebilir -->
-                <div class="text">
-                    <h4>Başarım Kazanıldı!</h4>
-                    <p id="achievement-text">Örnek Başarım</p>
+                <button id="click-btn" class="shrek-btn">
+                    <div class="shrek-face">👹</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sağ Panel: Yükseltmeler ve Başarımlar -->
+        <div class="right-panel">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('upgrades')">Yükseltmeler</button>
+                <button class="tab-btn" onclick="switchTab('click-upgrades')">Güçlendirmeler</button>
+                <button class="tab-btn" onclick="switchTab('achievements')">Başarımlar</button>
+            </div>
+
+            <div id="upgrades-section" class="panel-content active">
+                <div id="upgrades-container" class="upgrades-list">
+                    <!-- Pasif Yükseltmeler JS ile buraya eklenecek -->
                 </div>
             </div>
 
-            <script src="game.js"></script>
+            <div id="click-upgrades-section" class="panel-content" style="display: none;">
+                <div id="click-upgrades-container" class="upgrades-list">
+                    <!-- Tıklama Yükseltmeleri JS ile buraya eklenecek -->
+                </div>
+            </div>
+
+            <div id="achievements-section" class="panel-content" style="display: none;">
+                <div id="achievements-container" class="achievements-list">
+                    <!-- Başarımlar JS ile buraya eklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Başarım Bildirimi -->
+    <div id="achievement-notification" class="achievement-notification hidden">
+        <div class="icon">🏆</div>
+        <div class="text">
+            <h4>Başarım Kazanıldı!</h4>
+            <p id="achievement-text">Örnek Başarım</p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
 </body>
 
 </html>
