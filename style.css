@@ -1,5 +1,6 @@
 :root {
-    --primary-color: #8bc34a; /* Shrek yeşili */
+    --primary-color: #8bc34a;
+    /* Shrek yeşili */
     --secondary-color: #558b2f;
     --bg-color: #f1f8e9;
     --text-color: #33691e;
@@ -31,39 +32,72 @@ body {
     height: 90vh;
     background-color: var(--card-bg);
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-/* Sol Panel */
+/* Sol Panel - Bataklık Teması */
 .click-section {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #dcedc8 0%, #f1f8e9 100%);
+    background: radial-gradient(circle at center, #dcedc8 0%, #aed581 40%, #558b2f 100%);
     padding: 20px;
-    border-right: 2px solid #c5e1a5;
+    border-right: 4px solid #33691e;
     position: relative;
+    overflow: hidden;
+}
+
+/* Bataklık Sisi Efekti */
+.click-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.1"/%3E%3C/svg%3E');
+    pointer-events: none;
+    animation: fogMove 20s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes fogMove {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
 }
 
 .score-container {
     text-align: center;
     margin-bottom: 40px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 15px 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
 #score {
     font-family: 'Fredoka One', cursive;
-    font-size: 4rem;
-    color: var(--secondary-color);
-    text-shadow: 2px 2px 0px #fff;
+    font-size: 4.5rem;
+    color: #2e7d32;
+    text-shadow: 3px 3px 0px #a5d6a7, 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .cps-display {
-    font-size: 1.2rem;
-    color: #689f38;
+    font-size: 1.4rem;
+    color: #1b5e20;
     margin-top: 5px;
+    font-weight: bold;
 }
 
 .shrek-btn {
@@ -73,56 +107,99 @@ body {
     transition: transform 0.1s;
     outline: none;
     user-select: none;
+    z-index: 10;
+    position: relative;
 }
 
 .shrek-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.90) rotate(-5deg);
 }
 
 .shrek-face {
-    font-size: 150px;
+    font-size: 180px;
     line-height: 1;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
-    transition: transform 0.1s;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .shrek-btn:hover .shrek-face {
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(5deg);
 }
 
 /* Tıklama Efekti */
 .click-effect {
     position: absolute;
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: var(--text-color);
+    font-weight: 900;
+    font-size: 2rem;
+    color: #ffeb3b;
+    text-shadow: 2px 2px 0 #33691e;
     pointer-events: none;
-    animation: floatUp 1s ease-out forwards;
+    animation: floatUp 0.8s ease-out forwards;
+    z-index: 20;
 }
 
 @keyframes floatUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-50px); opacity: 0; }
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-30px) scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-60px) scale(1);
+        opacity: 0;
+    }
 }
 
 /* Sağ Panel */
-.upgrades-section {
+.right-panel {
     flex: 1;
-    padding: 20px;
-    background-color: #fff;
+    background-color: #f1f8e9;
     display: flex;
     flex-direction: column;
+    border-left: 2px solid #c5e1a5;
+}
+
+.tabs {
+    display: flex;
+    background-color: #c5e1a5;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: #558b2f;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.tab-btn.active {
+    background-color: #f1f8e9;
+    color: #2e7d32;
+    border-bottom: 3px solid #f1f8e9;
+    /* Blend with content */
+}
+
+.tab-btn:hover:not(.active) {
+    background-color: #dcedc8;
+}
+
+.panel-content {
+    flex: 1;
+    padding: 20px;
     overflow-y: auto;
 }
 
-.upgrades-section h2 {
-    font-family: 'Fredoka One', cursive;
-    margin-bottom: 20px;
-    color: var(--secondary-color);
-    text-align: center;
-}
-
-.upgrades-list {
+.upgrades-list,
+.achievements-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -132,41 +209,133 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f9fbe7;
+    background-color: #fff;
     padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    border: 2px solid #aed581;
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .upgrade-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(85, 139, 47, 0.2);
+    border-color: #558b2f;
 }
 
 .upgrade-card.disabled {
     opacity: 0.6;
     cursor: not-allowed;
     filter: grayscale(100%);
+    background-color: #e0e0e0;
+    border-color: #bdbdbd;
 }
 
 .upgrade-info h3 {
     font-size: 1.1rem;
     margin-bottom: 5px;
+    color: #33691e;
 }
 
 .upgrade-cost {
     font-weight: bold;
-    color: var(--accent-color);
+    color: #ef6c00;
 }
 
 .upgrade-count {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--secondary-color);
+    color: #558b2f;
     min-width: 40px;
     text-align: right;
+    background: #dcedc8;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+/* Başarımlar */
+.achievement-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #ccc;
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.achievement-card.unlocked {
+    opacity: 1;
+    border-color: #ffd700;
+    background: linear-gradient(to right, #fff, #fffde7);
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+}
+
+.achievement-icon {
+    font-size: 2.5rem;
+    margin-right: 15px;
+    filter: grayscale(100%);
+}
+
+.achievement-card.unlocked .achievement-icon {
+    filter: grayscale(0%);
+}
+
+.achievement-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.achievement-card.unlocked .achievement-info h3 {
+    color: #f57f17;
+}
+
+.achievement-desc {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Bildirim */
+.achievement-notification {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #333;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-left: 5px solid #ffd700;
+}
+
+.achievement-notification.hidden {
+    transform: translateY(100px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.achievement-notification .icon {
+    font-size: 2rem;
+}
+
+.achievement-notification h4 {
+    margin: 0;
+    color: #ffd700;
+    font-size: 1rem;
+}
+
+.achievement-notification p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
 }
