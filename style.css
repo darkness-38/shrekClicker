@@ -515,3 +515,65 @@ body {
     left: 100%;
     transition: left 0.5s;
 }
+
+/* --- FAZ 7: Mobil Uyumluluk --- */
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column;
+        height: 95vh;
+        margin-top: 60px;
+        /* Ticker için yer */
+        width: 95%;
+    }
+
+    .click-section {
+        flex: 0 0 40%;
+        /* Üst %40 */
+        border-right: none;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        padding: 10px;
+    }
+
+    .right-panel {
+        flex: 1;
+        /* Alt kısım */
+        padding: 10px;
+    }
+
+    .shrek-face {
+        font-size: 100px;
+        /* Daha küçük yüz */
+    }
+
+    .score-container {
+        margin-bottom: 20px;
+        padding: 10px 20px;
+    }
+
+    #score {
+        font-size: 3rem;
+    }
+
+    .tab-btn {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .upgrade-card {
+        padding: 10px;
+    }
+
+    .upgrade-icon {
+        font-size: 1.5rem;
+    }
+
+    .footer {
+        font-size: 0.7rem;
+        bottom: 5px;
+    }
+
+    /* Ticker mobilde taşmasın */
+    .ticker-wrap {
+        width: 100%;
+    }
+}
