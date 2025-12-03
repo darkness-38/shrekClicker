@@ -14,14 +14,19 @@ const notification = document.getElementById('achievement-notification');
 const notificationText = document.getElementById('achievement-text');
 
 // Yükseltme Verileri
+// type: 'cps' (Pasif Gelir) veya 'click' (Tıklama Gücü)
+// power: Sağladığı değer
 const upgrades = [
-    { id: 'onion', name: 'Soğan', baseCost: 15, currentCost: 15, cps: 0.5, count: 0, icon: '🧅' },
-    { id: 'donkey', name: 'Eşek', baseCost: 100, currentCost: 100, cps: 3, count: 0, icon: '🐴' },
-    { id: 'gingerbread', name: 'Kurabiye Adam', baseCost: 300, currentCost: 300, cps: 8, count: 0, icon: '🍪' },
-    { id: 'swamp', name: 'Bataklık', baseCost: 1000, currentCost: 1000, cps: 20, count: 0, icon: '🏞️' },
-    { id: 'dragon', name: 'Ejderha', baseCost: 5000, currentCost: 5000, cps: 60, count: 0, icon: '🐉' },
-    { id: 'fiona', name: 'Prenses Fiona', baseCost: 20000, currentCost: 20000, cps: 200, count: 0, icon: '👸' },
-    { id: 'castle', name: 'Farquaad\'ın Kalesi', baseCost: 100000, currentCost: 100000, cps: 500, count: 0, icon: '🏰' }
+    { id: 'onion', name: 'Soğan', type: 'cps', baseCost: 15, currentCost: 15, power: 0.5, count: 0, icon: '🧅' },
+    { id: 'strong_finger', name: 'Güçlü Parmak', type: 'click', baseCost: 50, currentCost: 50, power: 1, count: 0, icon: '👆' },
+    { id: 'donkey', name: 'Eşek', type: 'cps', baseCost: 100, currentCost: 100, power: 3, count: 0, icon: '🐴' },
+    { id: 'ogre_fist', name: 'Ogre Yumruğu', type: 'click', baseCost: 250, currentCost: 250, power: 3, count: 0, icon: '👊' },
+    { id: 'gingerbread', name: 'Kurabiye Adam', type: 'cps', baseCost: 300, currentCost: 300, power: 8, count: 0, icon: '🍪' },
+    { id: 'swamp', name: 'Bataklık', type: 'cps', baseCost: 1000, currentCost: 1000, power: 20, count: 0, icon: '🏞️' },
+    { id: 'club', name: 'Dev Sopa', type: 'click', baseCost: 1500, currentCost: 1500, power: 10, count: 0, icon: '🪵' },
+    { id: 'dragon', name: 'Ejderha', type: 'cps', baseCost: 5000, currentCost: 5000, power: 60, count: 0, icon: '🐉' },
+    { id: 'fiona', name: 'Prenses Fiona', type: 'cps', baseCost: 20000, currentCost: 20000, power: 200, count: 0, icon: '👸' },
+    { id: 'castle', name: 'Farquaad\'ın Kalesi', type: 'cps', baseCost: 100000, currentCost: 100000, power: 500, count: 0, icon: '🏰' }
 ];
 
 // Başarım Verileri
@@ -31,7 +36,8 @@ const achievements = [
     { id: 'donkey_friend', name: 'Eşek Dostu', desc: 'Bir Eşek satın al.', condition: () => upgrades.find(u => u.id === 'donkey').count >= 1, unlocked: false, icon: '🐴' },
     { id: 'click_master', name: 'Tıklama Ustası', desc: '1000 kez tıkla.', condition: () => totalClicks >= 1000, unlocked: false, icon: '🖱️' },
     { id: 'rich_ogre', name: 'Zengin Ogre', desc: '10,000 soğan biriktir.', condition: () => score >= 10000, unlocked: false, icon: '💰' },
-    { id: 'swamp_king', name: 'Bataklık Kralı', desc: 'Saniyede 100 soğan kazan.', condition: () => passiveIncome >= 100, unlocked: false, icon: '👑' }
+    { id: 'swamp_king', name: 'Bataklık Kralı', desc: 'Saniyede 100 soğan kazan.', condition: () => passiveIncome >= 100, unlocked: false, icon: '👑' },
+    { id: 'power_clicker', name: 'Güçlü Tıklayıcı', desc: 'Tıklama gücünü 10 yap.', condition: () => clickPower >= 10, unlocked: false, icon: '💪' }
 ];
 
 // Başlangıç
@@ -99,16 +105,19 @@ function renderUpgrades() {
     upgradesContainer.innerHTML = '';
     upgrades.forEach((upgrade, index) => {
         const card = document.createElement('div');
-        card.className = 'upgrade-card disabled';
+        card.className = `upgrade-card disabled ${upgrade.type}-upgrade`; // type sınıfı ekle
         card.id = `upgrade-${index}`;
         card.onclick = () => buyUpgrade(index);
+
+        const powerText = upgrade.type === 'cps' ? `+${upgrade.power}/sn` : `+${upgrade.power} Tık`;
+        const typeColor = upgrade.type === 'cps' ? '#666' : '#d84315'; // Tıklama için farklı renk
 
         card.innerHTML = `
             <div class="upgrade-icon" style="font-size: 2.5rem; margin-right: 15px;">${upgrade.icon}</div>
             <div class="upgrade-info" style="flex: 1;">
                 <h3>${upgrade.name}</h3>
                 <p class="upgrade-cost">${Math.floor(upgrade.currentCost)} 🧅</p>
-                <p style="font-size: 0.8rem; color: #666;">+${upgrade.cps}/sn</p>
+                <p style="font-size: 0.8rem; color: ${typeColor}; font-weight: bold;">${powerText}</p>
             </div>
             <div class="upgrade-count" id="count-${index}">${upgrade.count}</div>
         `;
@@ -169,7 +178,13 @@ function buyUpgrade(index) {
     if (score >= upgrade.currentCost) {
         score -= upgrade.currentCost;
         upgrade.count++;
-        passiveIncome += upgrade.cps;
+
+        if (upgrade.type === 'cps') {
+            passiveIncome += upgrade.power;
+        } else if (upgrade.type === 'click') {
+            clickPower += upgrade.power;
+        }
+
         upgrade.currentCost = Math.ceil(upgrade.currentCost * 1.15);
 
         updateUI();
@@ -182,6 +197,7 @@ function buyUpgrade(index) {
 function updateUI() {
     scoreElement.innerText = Math.floor(score);
     cpsElement.innerText = passiveIncome.toFixed(1);
+    // Tıklama gücünü de bir yerde gösterebiliriz ama şimdilik sadece CPS var
     document.title = `${Math.floor(score)} Soğan - Shrek Clicker`;
 }
 

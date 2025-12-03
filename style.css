@@ -339,3 +339,13 @@ body {
     margin: 5px 0 0;
     font-size: 0.9rem;
 }
+/* Týklama Yükseltmeleri için Özel Stil */
+.upgrade-card.click-upgrade {
+    background-color: #fff3e0;
+    border-color: #ffb74d;
+}
+
+.upgrade-card.click-upgrade:hover {
+    border-color: #ef6c00;
+    box-shadow: 0 5px 15px rgba(239, 108, 0, 0.2);
+}
