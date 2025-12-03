@@ -228,27 +228,31 @@ function checkUpgradeAvailability() {
     });
 }
 
-// Shrek Gerçekleri
-const shrekFacts = [
+// Rastgele Gerçekler
+const randomFacts = [
+    "Bal, bozulmayan tek gıdadır. 🍯",
+    "Ahtapotların üç kalbi vardır. 🐙",
+    "Çilek aslında bir meyve değil, bir çiçektir. 🍓",
+    "Zürafaların ses telleri yoktur. 🦒",
+    "Bir gün Venüs'te bir yıldan daha uzundur. 🪐",
+    "İnsan DNA'sı %50 oranında muz DNA'sı ile aynıdır. 🍌",
     "Shrek aslında Yiddish dilinde 'korku' anlamına gelir! 🧅",
-    "Shrek'in yıldızı Hollywood Walk of Fame'de bulunmaktadır. ⭐",
-    "Shrek filminin yapımı 1995 yılında başlamıştır. 🎬",
-    "Eddie Murphy, Eşek rolünü seslendirmekten çok keyif almıştır. 🐴",
-    "Shrek, En İyi Animasyon Filmi dalında ilk Oscar'ı kazanan filmdir. 🏆",
-    "Ogreler soğan gibidir, katmanları vardır! 🧅",
-    "Bataklık, Shrek'in en sevdiği yerdir. 🏞️",
-    "Zencefilli Kurabiye Adam'ın bacakları süte batırılmaktan nefret eder! 🥛",
-    "Fiona geceleri bir Ogre'ye dönüşür. 👸👹",
-    "Farquaad'ın kalesi aslında Disneyland'den esinlenilmiştir. 🏰"
+    "Dünyadaki karıncaların toplam ağırlığı, insanlarınkine eşittir. 🐜",
+    "Su aygırları su altında uyuyabilirler. 🦛",
+    "Kangurular geri geri yürüyemezler. 🦘",
+    "Kutup ayılarının derisi siyahtır. 🐻‍❄️",
+    "Bir bulutun ağırlığı 500 tona ulaşabilir. ☁️"
 ];
 
 function updateTicker() {
     const tickerText = document.getElementById('fact-text');
-    const randomFact = shrekFacts[Math.floor(Math.random() * shrekFacts.length)];
+    // Rastgele bir gerçek seç
+    const randomFact = randomFacts[Math.floor(Math.random() * randomFacts.length)];
     tickerText.innerText = randomFact;
 }
 
 // Oyunu Başlat
 init();
 // Ticker'ı başlat
-setInterval(updateTicker, 10000); // Her 10 saniyede bir değiştir
+updateTicker(); // İlk açılışta bir gerçek göster
+setInterval(updateTicker, 15000); // Her 15 saniyede bir değiştir (animasyon süresiyle uyumlu olsun)
