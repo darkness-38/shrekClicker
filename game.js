@@ -25,7 +25,20 @@ const upgrades = [
     { id: 'club', name: 'Dev Sopa', type: 'click', baseCost: 3500, currentCost: 3500, power: 5, count: 0, icon: '🪵' },
     { id: 'dragon', name: 'Ejderha', type: 'cps', baseCost: 10000, currentCost: 10000, power: 30, count: 0, icon: '🐉' },
     { id: 'fiona', name: 'Prenses Fiona', type: 'cps', baseCost: 40000, currentCost: 40000, power: 100, count: 0, icon: '👸' },
-    { id: 'castle', name: 'Farquaad\'ın Kalesi', type: 'cps', baseCost: 200000, currentCost: 200000, power: 250, count: 0, icon: '🏰' }
+    { id: 'castle', name: 'Farquaad\'ın Kalesi', type: 'cps', baseCost: 200000, currentCost: 200000, power: 250, count: 0, icon: '🏰' },
+
+    // Faz 13: Yeni İçerik Paketi
+    // Pasif Yükseltmeler
+    { id: 'magic_mirror', name: 'Sihirli Ayna', type: 'cps', baseCost: 50000, currentCost: 50000, power: 150, count: 0, icon: '🪞' },
+    { id: 'puss_in_boots', name: 'Çizmeli Kedi', type: 'cps', baseCost: 150000, currentCost: 150000, power: 400, count: 0, icon: '😼' },
+    { id: 'fairy_godmother', name: 'İyilik Perisi', type: 'cps', baseCost: 500000, currentCost: 500000, power: 1200, count: 0, icon: '🧚‍♀️' },
+    { id: 'far_far_away', name: 'Uzaklardaki Krallık', type: 'cps', baseCost: 2000000, currentCost: 2000000, power: 5000, count: 0, icon: '🏰' },
+
+    // Tıklama Güçlendirmeleri
+    { id: 'mud_bath', name: 'Çamur Banyosu', type: 'click', baseCost: 7500, currentCost: 7500, power: 20, count: 0, icon: '🛁' },
+    { id: 'roar_training', name: 'Kükreme Eğitimi', type: 'click', baseCost: 25000, currentCost: 25000, power: 50, count: 0, icon: '🗣️' },
+    { id: 'ogre_strength', name: 'Ogre Gücü', type: 'click', baseCost: 100000, currentCost: 100000, power: 200, count: 0, icon: '💪' },
+    { id: 'love_potion', name: 'Aşk İksiri', type: 'click', baseCost: 1000000, currentCost: 1000000, power: 1000, count: 0, icon: '🧪' }
 ];
 
 // Başarım Verileri
