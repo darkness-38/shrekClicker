@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shrek Clicker</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="game-container">
         <!-- Sol Panel: Tıklama ve Puan -->
@@ -16,7 +19,7 @@
                 <p>Soğan</p>
                 <p class="cps-display">saniyede: <span id="cps">0</span></p>
             </div>
-            
+
             <div class="click-area">
                 <!-- Şimdilik placeholder bir div, daha sonra görsel eklenebilir -->
                 <button id="click-btn" class="shrek-btn">
@@ -25,15 +28,37 @@
             </div>
         </div>
 
-        <!-- Sağ Panel: Yükseltmeler -->
-        <div class="upgrades-section">
-            <h2>Yükseltmeler</h2>
-            <div id="upgrades-container" class="upgrades-list">
-                <!-- Yükseltmeler JS ile buraya eklenecek -->
+        <!-- Sağ Panel: Yükseltmeler ve Başarımlar -->
+        <div class="right-panel">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('upgrades')">Yükseltmeler</button>
+                <button class="tab-btn" onclick="switchTab('achievements')">Başarımlar</button>
             </div>
+
+            <div id="upgrades-section" class="panel-content active">
+                <div id="upgrades-container" class="upgrades-list">
+                    <!-- Yükseltmeler JS ile buraya eklenecek -->
+                </div>
+            </div>
+
+            <div id="achievements-section" class="panel-content" style="display: none;">
+                <div id="achievements-container" class="achievements-list">
+                    <!-- Başarımlar JS ile buraya eklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Başarım Bildirimi -->
+    <div id="achievement-notification" class="achievement-notification hidden">
+        <div class="icon">🏆</div>
+        <div class="text">
+            <h4>Başarım Kazanıldı!</h4>
+            <p id="achievement-text">Örnek Başarım</p>
         </div>
     </div>
 
     <script src="game.js"></script>
 </body>
+
 </html>
