@@ -581,25 +581,67 @@ body {
 /* Kaydet Butonu */
 .save-btn {
     position: fixed;
-    bottom: 40px;
+    top: 60px;
+    /* Ticker'ın altında */
     right: 20px;
     background-color: #4caf50;
     color: white;
-    border: none;
+    border: 2px solid #fff;
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: all 0.2s;
-    z-index: 1000;
+    z-index: 10001;
+    /* En üstte olsun */
 }
 
 .save-btn:hover {
     background-color: #388e3c;
     transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-.save-btn:active {
-    transform: translateY(0);
+
+
+/* --- FAZ 11: Rastgele Olaylar (Altın Soğan) --- */
+.golden-onion {
+    position: fixed;
+    font-size: 4rem;
+    cursor: pointer;
+    z-index: 2000;
+    filter: drop-shadow(0 0 15px gold);
+    animation: float 3s ease-in-out infinite, shine 1.5s infinite alternate;
+    transition: transform 0.2s;
+}
+
+.golden-onion:hover {
+    transform: scale(1.2);
+}
+
+.golden-onion:active {
+    transform: scale(0.9);
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes shine {
+    from {
+        filter: drop-shadow(0 0 10px gold);
+    }
+
+    to {
+        filter: drop-shadow(0 0 25px #fff700);
+    }
 }

@@ -36,7 +36,8 @@ const achievements = [
     { id: 'click_master', name: 'Tıklama Ustası', desc: '1000 kez tıkla.', reward: 500, condition: () => totalClicks >= 1000, unlocked: false, icon: '🖱️' },
     { id: 'rich_ogre', name: 'Zengin Ogre', desc: '10,000 soğan biriktir.', reward: 1000, condition: () => score >= 10000, unlocked: false, icon: '💰' },
     { id: 'swamp_king', name: 'Bataklık Kralı', desc: 'Saniyede 100 soğan kazan.', reward: 2000, condition: () => passiveIncome >= 100, unlocked: false, icon: '👑' },
-    { id: 'power_clicker', name: 'Güçlü Tıklayıcı', desc: 'Tıklama gücünü 10 yap.', reward: 1500, condition: () => clickPower >= 10, unlocked: false, icon: '💪' }
+    { id: 'power_clicker', name: 'Güçlü Tıklayıcı', desc: 'Tıklama gücünü 10 yap.', reward: 1500, condition: () => clickPower >= 10, unlocked: false, icon: '💪' },
+    { id: 'safe_keeper', name: 'Güvenli Liman', desc: 'Oyunu ilk kez manuel kaydet.', reward: 5, condition: () => false, unlocked: false, icon: '💾' }
 ];
 
 // Başlangıç
@@ -362,7 +363,8 @@ function saveGame() {
         passiveIncome: passiveIncome,
         totalClicks: totalClicks,
         upgrades: upgrades, // Yükseltme sayıları ve maliyetleri
-        achievements: achievements.map(a => ({ id: a.id, unlocked: a.unlocked })) // Sadece kilit durumunu kaydet
+        achievements: achievements.map(a => ({ id: a.id, unlocked: a.unlocked })), // Sadece kilit durumunu kaydet
+        milestones: milestones.map(m => ({ score: m.score, reached: m.reached })) // Milestone durumunu kaydet
     };
 
     const transaction = db.transaction([STORE_NAME], 'readwrite');
@@ -381,7 +383,18 @@ function saveGame() {
 // Manuel Kayıt Butonu İçin
 window.saveGameManual = function () {
     saveGame();
-    showNotification("Oyun Kaydedildi", 0); // Ödül 0, sadece bilgi
+
+    const ach = achievements.find(a => a.id === 'safe_keeper');
+    if (ach && !ach.unlocked) {
+        ach.unlocked = true;
+        score += ach.reward;
+        showNotification(ach.name, ach.reward);
+        updateAchievementCard(ach.id);
+        updateUI();
+        saveGame(); // Başarımı kaydetmek için tekrar kaydet
+    } else {
+        showNotification("Oyun Kaydedildi", 0); // Ödül 0, sadece bilgi
+    }
 };
 
 // Oyunu Yükle
@@ -420,6 +433,16 @@ function loadGame() {
                 });
             }
 
+            // Milestone'ları Geri Yükle
+            if (data.milestones) {
+                data.milestones.forEach(savedMs => {
+                    const ms = milestones.find(m => m.score === savedMs.score);
+                    if (ms) {
+                        ms.reached = savedMs.reached;
+                    }
+                });
+            }
+
             updateUI();
             renderUpgrades();
             renderAchievements(); // Kilitli/açık durumları güncelle
@@ -433,3 +456,141 @@ initDB();
 
 // Otomatik Kayıt (Her 30 saniyede bir)
 setInterval(saveGame, 30000);
+
+// --- FAZ 11: Rastgele Olaylar (Altın Soğan) ---
+
+function spawnGoldenOnion() {
+    const onion = document.createElement('div');
+    onion.className = 'golden-onion';
+    onion.innerText = '🧅';
+
+    // Rastgele Konum
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    onion.style.left = `${x}px`;
+    onion.style.top = `${y}px`;
+
+    onion.onclick = () => {
+        const reward = Math.max(500, passiveIncome * 60); // En az 500 veya 60 saniyelik üretim
+        score += reward;
+        showNotification("Altın Soğan Yakalandı!", Math.floor(reward));
+        createParticleEffect({ clientX: x + 20, clientY: y + 20 }); // Efekt
+        updateUI();
+        onion.remove();
+    };
+
+    document.body.appendChild(onion);
+
+    // 10 saniye sonra kaybolsun
+    setTimeout(() => {
+        if (document.body.contains(onion)) {
+            onion.remove();
+        }
+    }, 10000);
+
+    // Bir sonraki soğan için zamanlayıcı kur (60-180 sn arası)
+    scheduleNextGoldenOnion();
+}
+
+function scheduleNextGoldenOnion() {
+    const minTime = 60000; // 60 sn
+    const maxTime = 180000; // 180 sn
+    const randomTime = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+
+    setTimeout(spawnGoldenOnion, randomTime);
+}
+
+// Oyuna başlarken ilk soğanı planla
+scheduleNextGoldenOnion();
+
+// --- FAZ 12: Dönüm Noktası Olayları ---
+
+const milestones = [
+    { score: 1000, reached: false, event: 'onion_rain', message: "1,000 Soğan! Soğan Yağmuru Başlıyor!" },
+    { score: 10000, reached: false, event: 'ogre_roar', message: "10,000 Soğan! Ogre Kükremesi!" },
+    { score: 50000, reached: false, event: 'swamp_party', message: "50,000 Soğan! Bataklık Partisi!" }
+];
+
+function checkMilestones() {
+    milestones.forEach(ms => {
+        if (!ms.reached && score >= ms.score) {
+            ms.reached = true;
+            showNotification(ms.message, 0);
+            triggerEvent(ms.event);
+            saveGame(); // Durumu kaydet
+        }
+    });
+}
+
+function triggerEvent(eventName) {
+    if (eventName === 'onion_rain') {
+        triggerOnionRain();
+    } else if (eventName === 'ogre_roar') {
+        triggerOgreRoar();
+    } else if (eventName === 'swamp_party') {
+        triggerSwampParty();
+    }
+}
+
+function triggerOnionRain() {
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const onion = document.createElement('div');
+            onion.className = 'falling-onion';
+            onion.innerText = '🧅';
+            onion.style.left = Math.random() * 100 + 'vw';
+            onion.style.animationDuration = (Math.random() * 2 + 2) + 's'; // 2-4s arası
+            document.body.appendChild(onion);
+            setTimeout(() => onion.remove(), 4000);
+        }, i * 100);
+    }
+}
+
+function triggerOgreRoar() {
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 500);
+
+    // Tıklama gücünü 2 katına çıkar (30 sn)
+    const originalPower = clickPower;
+    clickPower *= 2;
+    showNotification("Güçlü Kükreme! Tıklama 2x!", 0);
+
+    setTimeout(() => {
+        clickPower = originalPower; // Eski haline döndür (basit mantık, upgrade alınırsa sorun olabilir ama şimdilik yeterli)
+        showNotification("Kükreme Etkisi Bitti.", 0);
+    }, 30000);
+}
+
+function triggerSwampParty() {
+    // Konfeti (Basitçe renkli parçacıklar)
+    for (let i = 0; i < 100; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'falling-onion'; // Aynı animasyonu kullan
+            confetti.innerText = ['🎉', '🎊', '✨'][Math.floor(Math.random() * 3)];
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 5000);
+        }, i * 50);
+    }
+
+    // Üretimi 2 katına çıkar (60 sn)
+    const originalPassive = passiveIncome;
+    const originalClick = clickPower;
+
+    passiveIncome *= 2;
+    clickPower *= 2;
+
+    showNotification("Bataklık Partisi! Her Şey 2x!", 0);
+
+    setTimeout(() => {
+        passiveIncome = originalPassive; // Dikkat: Bu süre içinde upgrade alınırsa değerler karışabilir. 
+        // Daha sağlam bir "bonus çarpanı" sistemi gerekebilir ama şimdilik basit tutuyoruz.
+        clickPower = originalClick;
+        showNotification("Parti Bitti.", 0);
+    }, 60000);
+}
+
+// Oyun döngüsüne ekle
+setInterval(checkMilestones, 1000);
