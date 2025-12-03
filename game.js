@@ -16,16 +16,16 @@ const notificationText = document.getElementById('achievement-text');
 
 // Yükseltme Verileri
 const upgrades = [
-    { id: 'onion', name: 'Soğan', type: 'cps', baseCost: 15, currentCost: 15, power: 0.5, count: 0, icon: '🧅' },
-    { id: 'strong_finger', name: 'Güçlü Parmak', type: 'click', baseCost: 50, currentCost: 50, power: 1, count: 0, icon: '👆' },
-    { id: 'donkey', name: 'Eşek', type: 'cps', baseCost: 100, currentCost: 100, power: 3, count: 0, icon: '🐴' },
-    { id: 'ogre_fist', name: 'Ogre Yumruğu', type: 'click', baseCost: 250, currentCost: 250, power: 3, count: 0, icon: '👊' },
-    { id: 'gingerbread', name: 'Kurabiye Adam', type: 'cps', baseCost: 300, currentCost: 300, power: 8, count: 0, icon: '🍪' },
-    { id: 'swamp', name: 'Bataklık', type: 'cps', baseCost: 1000, currentCost: 1000, power: 20, count: 0, icon: '🏞️' },
-    { id: 'club', name: 'Dev Sopa', type: 'click', baseCost: 1500, currentCost: 1500, power: 10, count: 0, icon: '🪵' },
-    { id: 'dragon', name: 'Ejderha', type: 'cps', baseCost: 5000, currentCost: 5000, power: 60, count: 0, icon: '🐉' },
-    { id: 'fiona', name: 'Prenses Fiona', type: 'cps', baseCost: 20000, currentCost: 20000, power: 200, count: 0, icon: '👸' },
-    { id: 'castle', name: 'Farquaad\'ın Kalesi', type: 'cps', baseCost: 100000, currentCost: 100000, power: 500, count: 0, icon: '🏰' }
+    { id: 'onion', name: 'Soğan', type: 'cps', baseCost: 25, currentCost: 25, power: 0.2, count: 0, icon: '🧅' },
+    { id: 'strong_finger', name: 'Güçlü Parmak', type: 'click', baseCost: 100, currentCost: 100, power: 0.5, count: 0, icon: '👆' },
+    { id: 'donkey', name: 'Eşek', type: 'cps', baseCost: 250, currentCost: 250, power: 1.5, count: 0, icon: '🐴' },
+    { id: 'ogre_fist', name: 'Ogre Yumruğu', type: 'click', baseCost: 500, currentCost: 500, power: 1.5, count: 0, icon: '👊' },
+    { id: 'gingerbread', name: 'Kurabiye Adam', type: 'cps', baseCost: 750, currentCost: 750, power: 4, count: 0, icon: '🍪' },
+    { id: 'swamp', name: 'Bataklık', type: 'cps', baseCost: 2500, currentCost: 2500, power: 10, count: 0, icon: '🏞️' },
+    { id: 'club', name: 'Dev Sopa', type: 'click', baseCost: 3500, currentCost: 3500, power: 5, count: 0, icon: '🪵' },
+    { id: 'dragon', name: 'Ejderha', type: 'cps', baseCost: 10000, currentCost: 10000, power: 30, count: 0, icon: '🐉' },
+    { id: 'fiona', name: 'Prenses Fiona', type: 'cps', baseCost: 40000, currentCost: 40000, power: 100, count: 0, icon: '👸' },
+    { id: 'castle', name: 'Farquaad\'ın Kalesi', type: 'cps', baseCost: 200000, currentCost: 200000, power: 250, count: 0, icon: '🏰' }
 ];
 
 // Başarım Verileri
@@ -321,3 +321,115 @@ function createFireflies() {
 init();
 updateTicker();
 setInterval(updateTicker, 15000);
+
+// --- FAZ 8: Kayıt Sistemi (IndexedDB) ---
+
+let db;
+const DB_NAME = 'ShrekClickerDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'gameState';
+
+// Veritabanını Başlat
+function initDB() {
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+    request.onerror = (event) => {
+        console.error("Veritabanı hatası:", event.target.errorCode);
+    };
+
+    request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+        }
+    };
+
+    request.onsuccess = (event) => {
+        db = event.target.result;
+        console.log("Veritabanı başarıyla açıldı.");
+        loadGame(); // Oyun açılınca verileri yükle
+    };
+}
+
+// Oyunu Kaydet
+function saveGame() {
+    if (!db) return;
+
+    const gameState = {
+        id: 'player1',
+        score: score,
+        clickPower: clickPower,
+        passiveIncome: passiveIncome,
+        totalClicks: totalClicks,
+        upgrades: upgrades, // Yükseltme sayıları ve maliyetleri
+        achievements: achievements.map(a => ({ id: a.id, unlocked: a.unlocked })) // Sadece kilit durumunu kaydet
+    };
+
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.put(gameState);
+
+    request.onsuccess = () => {
+        console.log("Oyun otomatik kaydedildi.");
+    };
+
+    request.onerror = () => {
+        console.error("Kayıt hatası.");
+    };
+}
+
+// Manuel Kayıt Butonu İçin
+window.saveGameManual = function () {
+    saveGame();
+    showNotification("Oyun Kaydedildi", 0); // Ödül 0, sadece bilgi
+};
+
+// Oyunu Yükle
+function loadGame() {
+    if (!db) return;
+
+    const transaction = db.transaction([STORE_NAME], 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.get('player1');
+
+    request.onsuccess = (event) => {
+        const data = event.target.result;
+        if (data) {
+            score = data.score || 0;
+            clickPower = data.clickPower || 1;
+            passiveIncome = data.passiveIncome || 0;
+            totalClicks = data.totalClicks || 0;
+
+            // Yükseltmeleri Geri Yükle
+            if (data.upgrades) {
+                data.upgrades.forEach((savedUpgrade, index) => {
+                    if (upgrades[index]) {
+                        upgrades[index].count = savedUpgrade.count;
+                        upgrades[index].currentCost = savedUpgrade.currentCost;
+                    }
+                });
+            }
+
+            // Başarımları Geri Yükle
+            if (data.achievements) {
+                data.achievements.forEach(savedAch => {
+                    const ach = achievements.find(a => a.id === savedAch.id);
+                    if (ach) {
+                        ach.unlocked = savedAch.unlocked;
+                    }
+                });
+            }
+
+            updateUI();
+            renderUpgrades();
+            renderAchievements(); // Kilitli/açık durumları güncelle
+            console.log("Oyun verileri yüklendi.");
+        }
+    };
+}
+
+// Veritabanını başlat
+initDB();
+
+// Otomatik Kayıt (Her 30 saniyede bir)
+setInterval(saveGame, 30000);

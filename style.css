@@ -577,3 +577,29 @@ body {
         width: 100%;
     }
 }
+
+/* Kaydet Butonu */
+.save-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+    z-index: 1000;
+}
+
+.save-btn:hover {
+    background-color: #388e3c;
+    transform: translateY(-2px);
+}
+
+.save-btn:active {
+    transform: translateY(0);
+}
