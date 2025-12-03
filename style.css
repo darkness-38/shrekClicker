@@ -1,28 +1,14 @@
-:root {
-    --primary-color: #8bc34a;
-    /* Shrek yeşili */
-    --secondary-color: #558b2f;
-    --bg-color: #f1f8e9;
-    --text-color: #33691e;
-    --card-bg: #ffffff;
-    --accent-color: #ff9800;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    height: 100vh;
-    overflow: hidden;
+    background-color: #e8f5e9;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
 }
 
 .game-container {
@@ -30,73 +16,47 @@ body {
     width: 90%;
     max-width: 1200px;
     height: 90vh;
-    background-color: var(--card-bg);
+    background: linear-gradient(135deg, #66bb6a, #43a047);
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    margin-top: 40px;
+    /* Ticker spacing */
 }
 
-/* Sol Panel - Bataklık Teması */
+/* Left Panel */
 .click-section {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at center, #dcedc8 0%, #aed581 40%, #558b2f 100%);
-    padding: 20px;
-    border-right: 4px solid #33691e;
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
     position: relative;
-    overflow: hidden;
-}
-
-/* Bataklık Sisi Efekti */
-.click-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.1"/%3E%3C/svg%3E');
-    pointer-events: none;
-    animation: fogMove 20s linear infinite;
-    opacity: 0.3;
-}
-
-@keyframes fogMove {
-    0% {
-        background-position: 0 0;
-    }
-
-    100% {
-        background-position: 100% 100%;
-    }
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
 }
 
 .score-container {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    background: rgba(255, 255, 255, 0.6);
-    padding: 15px 30px;
-    border-radius: 20px;
-    backdrop-filter: blur(5px);
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
 }
 
 #score {
     font-family: 'Fredoka One', cursive;
-    font-size: 4.5rem;
+    font-size: 4rem;
     color: #2e7d32;
-    text-shadow: 3px 3px 0px #a5d6a7, 5px 5px 10px rgba(0, 0, 0, 0.2);
+    margin: 0;
+    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0, 0, 0, 0.1);
 }
 
 .cps-display {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #1b5e20;
-    margin-top: 5px;
     font-weight: bold;
 }
 
@@ -106,36 +66,162 @@ body {
     cursor: pointer;
     transition: transform 0.1s;
     outline: none;
-    user-select: none;
     z-index: 10;
-    position: relative;
 }
 
 .shrek-btn:active {
-    transform: scale(0.90) rotate(-5deg);
+    transform: scale(0.95);
 }
 
 .shrek-face {
-    font-size: 180px;
-    line-height: 1;
+    font-size: 150px;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.2s;
 }
 
 .shrek-btn:hover .shrek-face {
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.05) rotate(5deg);
+    animation: pulse 1s infinite;
 }
 
-/* Tıklama Efekti */
-.click-effect {
-    position: absolute;
-    font-weight: 900;
+/* Right Panel */
+.right-panel {
+    flex: 1;
+    background-color: #f1f8e9;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: #c5e1a5;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    color: #558b2f;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.tab-btn.active {
+    background-color: #7cb342;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.upgrades-list,
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upgrade-card,
+.achievement-card {
+    background-color: #fff;
+    border: 2px solid #c5e1a5;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-card:hover:not(.disabled),
+.achievement-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #7cb342;
+}
+
+.upgrade-card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #e0e0e0;
+    border-color: #bdbdbd;
+}
+
+.upgrade-icon,
+.achievement-icon {
     font-size: 2rem;
-    color: #ffeb3b;
-    text-shadow: 2px 2px 0 #33691e;
+    margin-right: 15px;
+}
+
+.upgrade-info h3,
+.achievement-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #33691e;
+}
+
+.upgrade-cost {
+    color: #757575;
+    font-size: 0.9rem;
+    margin: 5px 0 0;
+}
+
+.upgrade-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #bdbdbd;
+    margin-left: 10px;
+}
+
+/* Click Upgrades Style */
+.upgrade-card.click-upgrade {
+    background-color: #fff3e0;
+    border-color: #ffb74d;
+}
+
+.upgrade-card.click-upgrade:hover:not(.disabled) {
+    border-color: #ef6c00;
+    box-shadow: 0 5px 15px rgba(239, 108, 0, 0.2);
+}
+
+/* Achievement Cards */
+.achievement-card {
+    cursor: default;
+    opacity: 0.7;
+    filter: grayscale(100%);
+}
+
+.achievement-card.unlocked {
+    opacity: 1;
+    filter: grayscale(0%);
+    border-color: #ffd700;
+    background-color: #fffde7;
+}
+
+.achievement-desc {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 5px 0 0;
+}
+
+/* Click Effect */
+.click-effect {
+    position: fixed;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5rem;
     pointer-events: none;
     animation: floatUp 0.8s ease-out forwards;
-    z-index: 20;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 100;
 }
 
 @keyframes floatUp {
@@ -144,162 +230,13 @@ body {
         opacity: 1;
     }
 
-    50% {
-        transform: translateY(-30px) scale(1.2);
-        opacity: 1;
-    }
-
     100% {
-        transform: translateY(-60px) scale(1);
+        transform: translateY(-50px) scale(1.5);
         opacity: 0;
     }
 }
 
-/* Sağ Panel */
-.right-panel {
-    flex: 1;
-    background-color: #f1f8e9;
-    display: flex;
-    flex-direction: column;
-    border-left: 2px solid #c5e1a5;
-}
-
-.tabs {
-    display: flex;
-    background-color: #c5e1a5;
-}
-
-.tab-btn {
-    flex: 1;
-    padding: 15px;
-    border: none;
-    background: none;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    color: #558b2f;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.tab-btn.active {
-    background-color: #f1f8e9;
-    color: #2e7d32;
-    border-bottom: 3px solid #f1f8e9;
-    /* Blend with content */
-}
-
-.tab-btn:hover:not(.active) {
-    background-color: #dcedc8;
-}
-
-.panel-content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.upgrades-list,
-.achievements-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.upgrade-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    border: 2px solid #aed581;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.upgrade-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(85, 139, 47, 0.2);
-    border-color: #558b2f;
-}
-
-.upgrade-card.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    filter: grayscale(100%);
-    background-color: #e0e0e0;
-    border-color: #bdbdbd;
-}
-
-.upgrade-info h3 {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    color: #33691e;
-}
-
-.upgrade-cost {
-    font-weight: bold;
-    color: #ef6c00;
-}
-
-.upgrade-count {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #558b2f;
-    min-width: 40px;
-    text-align: right;
-    background: #dcedc8;
-    padding: 5px 10px;
-    border-radius: 8px;
-}
-
-/* Başarımlar */
-.achievement-card {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 12px;
-    border: 2px solid #ccc;
-    opacity: 0.5;
-    transition: all 0.3s;
-}
-
-.achievement-card.unlocked {
-    opacity: 1;
-    border-color: #ffd700;
-    background: linear-gradient(to right, #fff, #fffde7);
-    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
-}
-
-.achievement-icon {
-    font-size: 2.5rem;
-    margin-right: 15px;
-    filter: grayscale(100%);
-}
-
-.achievement-card.unlocked .achievement-icon {
-    filter: grayscale(0%);
-}
-
-.achievement-info h3 {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.achievement-card.unlocked .achievement-info h3 {
-    color: #f57f17;
-}
-
-.achievement-desc {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* Bildirim */
+/* Notification */
 .achievement-notification {
     position: fixed;
     bottom: 30px;
@@ -327,6 +264,7 @@ body {
 
 .achievement-notification .icon {
     font-size: 2rem;
+    animation: bounce 2s infinite;
 }
 
 .achievement-notification h4 {
@@ -339,13 +277,241 @@ body {
     margin: 5px 0 0;
     font-size: 0.9rem;
 }
-/* T�klama Y�kseltmeleri i�in �zel Stil */
-.upgrade-card.click-upgrade {
-    background-color: #fff3e0;
-    border-color: #ffb74d;
+
+/* Ticker */
+.ticker-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    height: 40px;
+    background-color: rgba(51, 105, 30, 0.95);
+    z-index: 9999;
+    border-bottom: 2px solid #8bc34a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
 }
 
-.upgrade-card.click-upgrade:hover {
-    border-color: #ef6c00;
-    box-shadow: 0 5px 15px rgba(239, 108, 0, 0.2);
+.ticker {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    white-space: nowrap;
+    position: absolute;
+    left: 0;
+    animation: ticker 20s linear infinite;
+}
+
+.ticker__item {
+    display: inline-block;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+}
+
+@keyframes ticker {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100vw);
+    }
+}
+
+/* New Animations */
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+    }
+
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+    }
+}
+
+/* --- FAZ 6: Gelişmiş Görsel Cila --- */
+
+/* 1. Özel Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #8bc34a;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #689f38;
+}
+
+/* 2. Glassmorphism (Buzlu Cam) */
+.score-container,
+.ticker-wrap,
+.achievement-notification {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.7);
+    /* Daha şeffaf */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ticker-wrap {
+    background-color: rgba(51, 105, 30, 0.85);
+    /* Ticker için özel renk */
+}
+
+/* 3. 3D Buton Hissi */
+.tab-btn {
+    transition: all 0.1s;
+    border-bottom: 4px solid transparent;
+}
+
+.tab-btn:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.upgrade-card:active:not(.disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 4. Ateş Böcekleri (Fireflies) */
+.firefly {
+    position: fixed;
+    width: 5px;
+    height: 5px;
+    background-color: #cddc39;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #cddc39, 0 0 20px #cddc39;
+    animation: fly 20s infinite linear;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+}
+
+@keyframes fly {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(100vw, -50vh);
+        opacity: 0;
+    }
+}
+
+/* 5. Parçacık Efekti (Particles) */
+.particle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.2rem;
+    animation: particleAnim 1s ease-out forwards;
+    z-index: 100;
+}
+
+@keyframes particleAnim {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) rotate(720deg) scale(0);
+        opacity: 0;
+    }
+}
+
+/* 6. İlerleme Çubuğu (Progress Bar) */
+.progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #ff9800;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.achievement-card.unlocked .progress-bar-fill {
+    background-color: #4caf50;
+}
+
+/* Footer */
+.footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+/* Card Shine Effect */
+.upgrade-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transition: left 0.5s;
+    pointer-events: none;
+}
+
+.upgrade-card:hover::after {
+    left: 100%;
+    transition: left 0.5s;
 }

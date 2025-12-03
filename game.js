@@ -256,3 +256,153 @@ init();
 // Ticker'ı başlat
 updateTicker(); // İlk açılışta bir gerçek göster
 setInterval(updateTicker, 15000); // Her 15 saniyede bir değiştir (animasyon süresiyle uyumlu olsun)
+
+// --- FAZ 6: Gelişmiş Görsel Cila ---
+
+// 1. Ateş Böcekleri Oluşturma
+function createFireflies() {
+    const container = document.getElementById('fireflies-container');
+    const fireflyCount = 20;
+
+    for (let i = 0; i < fireflyCount; i++) {
+        const firefly = document.createElement('div');
+        firefly.className = 'firefly';
+
+        // Rastgele başlangıç pozisyonu ve gecikme
+        const startY = Math.random() * 100;
+        const delay = Math.random() * 20;
+        const duration = 15 + Math.random() * 10;
+
+        firefly.style.top = `${startY}vh`;
+        firefly.style.left = `-${Math.random() * 10}vw`; // Ekranın solundan başla
+        firefly.style.animationDuration = `${duration}s`;
+        firefly.style.animationDelay = `${delay}s`;
+
+        container.appendChild(firefly);
+    }
+}
+
+// 2. Gelişmiş Tıklama Efekti (Parçacıklar)
+function createParticleEffect(e) {
+    const particleCount = 5 + Math.floor(Math.random() * 5); // 5-10 arası parçacık
+    const icons = ['🧅', '✨', '💚'];
+
+    const rect = clickBtn.getBoundingClientRect();
+    const x = e.clientX || (rect.left + rect.width / 2);
+    const y = e.clientY || (rect.top + rect.height / 2);
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.innerText = icons[Math.floor(Math.random() * icons.length)];
+
+        // Rastgele yön
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 50 + Math.random() * 100;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+    }
+}
+
+// createClickEffect fonksiyonunu güncelle (Eski fonksiyonun yerine)
+// Not: createClickEffect ismini koruyoruz ama içeriğini zenginleştiriyoruz
+// Mevcut createClickEffect fonksiyonunu override ediyoruz
+clickBtn.removeEventListener('click', clickBtn.onclick); // Önceki listener'ı temizlemek gerekebilir ama burada direkt üzerine yazıyoruz
+// Aslında clickBtn.addEventListener kullanıldığı için listener'ı değiştirmek yerine
+// createClickEffect fonksiyonunun içini değiştirmek daha doğru olurdu ama
+// JS'de fonksiyonlar hoisting ile yukarı taşınır veya son tanımlanan geçerli olur.
+// Ancak burada addEventListener içinde çağrılan fonksiyon 'createClickEffect' olduğu için
+// ve o fonksiyon yukarıda tanımlandığı için, yeni bir fonksiyon tanımlayıp
+// listener'ı güncellemek daha güvenli.
+
+// Listener'ı güncellemek yerine, mevcut listener createClickEffect'i çağırıyor.
+// Biz createClickEffect fonksiyonunu yeniden tanımlayalım.
+// Ancak const/let ile tanımlanmadıysa function declaration override edilebilir.
+// Yukarıdaki kodda function createClickEffect(...) şeklinde tanımlı.
+// JS'de aynı isimde ikinci fonksiyon tanımlanırsa o geçerli olur.
+
+function createClickEffect(e) {
+    // 1. Standart "+1" yazısı (Eski efekt)
+    const effect = document.createElement('div');
+    effect.className = 'click-effect';
+    effect.innerText = `+${clickPower}`;
+
+    const rect = clickBtn.getBoundingClientRect();
+    const x = e.clientX || (rect.left + rect.width / 2);
+    const y = e.clientY || (rect.top + rect.height / 2);
+    const randomX = (Math.random() - 0.5) * 60;
+
+    effect.style.left = `${x + randomX}px`;
+    effect.style.top = `${y - 40}px`;
+
+    document.body.appendChild(effect);
+    setTimeout(() => effect.remove(), 800);
+
+    // 2. Yeni Parçacık Efekti
+    createParticleEffect(e);
+}
+
+// 3. Başarımlar için İlerleme Çubuğu
+// renderAchievements fonksiyonunu güncellememiz lazım.
+// Ancak tüm fonksiyonu tekrar yazmak yerine, mevcut fonksiyonu override edelim.
+
+function renderAchievements() {
+    achievementsContainer.innerHTML = '';
+    achievements.forEach(ach => {
+        const card = document.createElement('div');
+        card.className = `achievement-card ${ach.unlocked ? 'unlocked' : ''}`;
+        card.id = `ach-${ach.id}`;
+
+        // İlerleme hesabı (Basit bir mantık)
+        let progress = 0;
+        let target = 0;
+        let current = 0;
+
+        // Condition fonksiyonunu analiz etmek zor, bu yüzden manuel mapping veya
+        // condition fonksiyonlarını daha akıllı hale getirmek gerekir.
+        // Şimdilik basitçe unlocked ise %100, değilse %0 gösterelim veya
+        // condition'ı kontrol edip tahmin yürütelim.
+        // Daha iyi bir yol: achievement objesine 'progress' fonksiyonu eklemek.
+        // Ama şimdilik unlocked durumuna göre yapalım.
+
+        progress = ach.unlocked ? 100 : 0;
+
+        // Eğer özel bir ilerleme takibi eklemek istersek buraya switch-case ekleyebiliriz
+        // Örn:
+        if (!ach.unlocked) {
+            if (ach.id === 'first_click') progress = (totalClicks / 1) * 100;
+            if (ach.id === 'click_master') progress = (totalClicks / 1000) * 100;
+            if (ach.id === 'onion_lover') progress = (score / 100) * 100;
+            if (ach.id === 'rich_ogre') progress = (score / 10000) * 100;
+            // Diğerleri için varsayılan 0
+        }
+        progress = Math.min(100, Math.max(0, progress)); // 0-100 arası sınırla
+
+        card.innerHTML = `
+            <div class="achievement-icon">${ach.icon}</div>
+            <div class="achievement-info" style="width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>${ach.name}</h3>
+                    <span style="font-size: 0.7rem; color: #888;">${Math.floor(progress)}%</span>
+                </div>
+                <p class="achievement-desc">${ach.desc}</p>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                </div>
+                <p style="font-size: 0.8rem; color: #ff9800; font-weight: bold; margin-top: 5px;">Ödül: ${ach.reward} 🧅</p>
+            </div>
+        `;
+        achievementsContainer.appendChild(card);
+    });
+}
+
+// Başlatma
+createFireflies();
