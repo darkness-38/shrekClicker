@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shrek Clicker</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Sol Panel: Tıklama ve Puan -->
+        <div class="click-section">
+            <div class="score-container">
+                <h1 id="score">0</h1>
+                <p>Soğan</p>
+                <p class="cps-display">saniyede: <span id="cps">0</span></p>
+            </div>
+            
+            <div class="click-area">
+                <!-- Şimdilik placeholder bir div, daha sonra görsel eklenebilir -->
+                <button id="click-btn" class="shrek-btn">
+                    <div class="shrek-face">👹</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sağ Panel: Yükseltmeler -->
+        <div class="upgrades-section">
+            <h2>Yükseltmeler</h2>
+            <div id="upgrades-container" class="upgrades-list">
+                <!-- Yükseltmeler JS ile buraya eklenecek -->
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+:root {
+    --primary-color: #8bc34a; /* Shrek yeşili */
+    --secondary-color: #558b2f;
+    --bg-color: #f1f8e9;
+    --text-color: #33691e;
+    --card-bg: #ffffff;
+    --accent-color: #ff9800;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    height: 90vh;
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Sol Panel */
+.click-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dcedc8 0%, #f1f8e9 100%);
+    padding: 20px;
+    border-right: 2px solid #c5e1a5;
+    position: relative;
+}
+
+.score-container {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+#score {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4rem;
+    color: var(--secondary-color);
+    text-shadow: 2px 2px 0px #fff;
+}
+
+.cps-display {
+    font-size: 1.2rem;
+    color: #689f38;
+    margin-top: 5px;
+}
+
+.shrek-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+    outline: none;
+    user-select: none;
+}
+
+.shrek-btn:active {
+    transform: scale(0.95);
+}
+
+.shrek-face {
+    font-size: 150px;
+    line-height: 1;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    transition: transform 0.1s;
+}
+
+.shrek-btn:hover .shrek-face {
+    transform: scale(1.05);
+}
+
+/* Tıklama Efekti */
+.click-effect {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    pointer-events: none;
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* Sağ Panel */
+.upgrades-section {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.upgrades-section h2 {
+    font-family: 'Fredoka One', cursive;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+.upgrades-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.upgrade-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9fbe7;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.upgrade-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-color: var(--primary-color);
+}
+
+.upgrade-card.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+}
+
+.upgrade-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.upgrade-cost {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.upgrade-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    min-width: 40px;
+    text-align: right;
+}
